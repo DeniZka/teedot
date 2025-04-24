@@ -4,17 +4,19 @@ class_name MapNode
 
 @export var zoom: bool = false:
 	set(val):
+		zoom = val
 		if not val:
 			for child in get_children():
 				child.position = child.origin_pos
+				
 
 func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		if zoom:
-			var vp := EditorInterface.get_editor_viewport_2d()
-			var v = vp.size / 2
-			for child in get_children():
-				child.position = (Vector2(v) -  vp.get_final_transform().origin)  * (Vector2.ONE - Vector2(child.paraX, child.paraY) / 100)
+	if Engine.is_editor_hint() and zoom:
+		var vp := EditorInterface.get_editor_viewport_2d()
+		var v = vp.size / 2
+		for child in get_children():
+			if not (child as GroupLayer).statically:
+				child.position = (Vector2(v) -  vp.get_final_transform().origin)  * (Vector2.ONE - child.fparallax)
 
 
 func load_groups(df: MapFile):
@@ -33,8 +35,7 @@ func load_groups(df: MapFile):
 		var child_pos = -2.0 * Vector2( g_p_info.decode_s32(4), g_p_info.decode_s32(8) )
 		tg.origin_pos = child_pos
 		tg.position = child_pos
-		tg.paraX = g_p_info.decode_s32(12)
-		tg.paraY = g_p_info.decode_s32(16)
+		tg.parallax = Vector2i(g_p_info.decode_s32(12), g_p_info.decode_s32(16))
 		tg.startLayer = g_p_info.decode_u32(20)
 		tg.numLayers = g_p_info.decode_u32(24)
 		tg.clipping = bool(g_p_info.decode_u32(28))

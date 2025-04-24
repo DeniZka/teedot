@@ -1,3 +1,4 @@
+@tool
 extends Node2D
 class_name GroupLayer
 
@@ -8,10 +9,18 @@ const LAYER_TYPE = 5
 
 @export var version: int
 @export var origin_pos: Vector2
-@export var ffX: int
-@export var offY: int
-@export var paraX: int
-@export var paraY: int
+@export var statically: bool = true
+@export var parallax: Vector2i = Vector2i(100, 100):
+	set(val):
+		parallax = val
+		fparallax = val / 100.0
+		if parallax == Vector2i(100, 100):
+			statically = true
+			position = origin_pos
+		else:
+			statically = false
+		
+@export var fparallax: Vector2 = Vector2.ONE
 @export var startLayer: int
 @export var numLayers: int
 @export var clipping: bool
