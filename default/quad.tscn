@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://d31ex3ayinpf3"]
+
+[ext_resource type="Script" uid="uid://bkdtcw0hk0uxb" path="res://default/quad.gd" id="1_m6vbw"]
+
+[node name="Quad" type="Polygon2D"]
+position = Vector2(597.5, 315.5)
+scale = Vector2(10.3359, 5.92969)
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+uv = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)
+vertex_colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+script = ExtResource("1_m6vbw")
