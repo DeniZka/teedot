@@ -13,12 +13,14 @@ const LAYER_TYPE = 5
 @export var parallax: Vector2i = Vector2i(100, 100):
 	set(val):
 		parallax = val
-		fparallax = val / 100.0
+		fparallax = Vector2.ONE - val / 100.0
 		if parallax == Vector2i(100, 100):
 			statically = true
 			position = origin_pos
 		else:
 			statically = false
+var read_layer_index: int = 0
+var read_layer_count: int = 0
 		
 @export var fparallax: Vector2 = Vector2.ONE
 @export var startLayer: int
@@ -26,15 +28,18 @@ const LAYER_TYPE = 5
 @export var clipping: bool
 
 # version 2 extension
-@export var clipX: int
-@export var clipY: int
-@export var clipW: int
-@export var clipH: int
+@export var clip: Rect2
 
 var empty_texture = load("res://default/images/empty.png")
 
+func setup(info: Dictionary):
+	
+	pass
+	
+
+
 func load_layers(df: MapFile):
-	var type_info = df.get_type(MapFile.TYPE_LAYER)
+	var type_info = df.item_types[MapFile.TYPE_LAYER]  #get_type(MapFile.TYPE_LAYER)
 	for i in range(startLayer, startLayer + numLayers):
 		#print("Layer ", i, " to ", startLayer + numLayers - 1)
 		var layer_item = df.get_item(type_info[MapFile.START] + i)
@@ -77,24 +82,20 @@ func load_layers(df: MapFile):
 				var tile_layer = TileLayerDefault.new()
 				tile_layer.modulate = mod_color
 				tile_layer.name = tile_layer_name
-				tile_layer.width = tile_layer_width
-				tile_layer.height = tile_layer_height
 				
 				var s: StreamPeerBuffer = StreamPeerBuffer.new()
 				s.data_array = df.get_data(tile_layer_data)
 				if tile_layer_image >= 0:
-					tile_layer.load_tiles(s, df.images[tile_layer_image])
+					tile_layer.load_tiles(s, tile_layer_width, tile_layer_height, df.images[tile_layer_image])
 				else:
-					tile_layer.load_tiles(s, empty_texture)
+					tile_layer.load_tiles(s, tile_layer_width, tile_layer_height, empty_texture)
 				add_child(tile_layer)
 				
 			elif tile_layer_flags == TileLayerDefault.GAME:
 				var game: TileLayerDefault = TileLayerDefault.new()
 				game.name = "Game"
-				game.width = tile_layer_width
-				game.height = tile_layer_height
 				game.modulate = Color(1.0, 1.0, 1.0, 0.7)
-				game.load_tiles( df.get_stream_data(tile_layer_data), load("res://default/images/DDNet.png") )
+				game.load_tiles( df.get_stream_data(tile_layer_data), tile_layer_width, tile_layer_height, load("res://default/images/DDNet.png") )
 				add_child(game)
 				
 				

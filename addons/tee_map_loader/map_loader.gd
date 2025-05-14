@@ -75,6 +75,7 @@ func _recursive_set_owner(node : Node, new_owner : Node):
 		_recursive_set_owner(child, new_owner)
 
 func _import(source_file: String, save_path, options, platform_variants, gen_files):
+	return
 	var df = MapFile.new(source_file)
 	if df.version == 4:
 		print("DONE")

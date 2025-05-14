@@ -10,10 +10,4 @@ config_version=5
 
 [application]
 
-config/name="Teedot"
-config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.png"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/tee_map_loader/plugin.cfg")
+config/features=PackedStringArray("4.4")
